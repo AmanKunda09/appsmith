@@ -120,6 +120,7 @@ import {
 import { Plugin } from "api/PluginApi";
 import { FlattenedWidgetProps } from "reducers/entityReducers/canvasWidgetsReducer";
 import { SnippetAction } from "reducers/uiReducers/globalSearchReducer";
+import { getType, Types } from "utils/TypeHelpers";
 
 export function* createActionSaga(
   actionPayload: ReduxAction<
@@ -655,7 +656,9 @@ function getDynamicBindingsChangesSaga(
   const bindingField = field.replace("actionConfiguration.", "");
   let dynamicBindings: DynamicPath[] = action.dynamicBindingPathList || [];
 
-  if (typeof value === "object") {
+  const valueType = getType(value);
+
+  if (valueType === Types.OBJECT) {
     dynamicBindings = dynamicBindings.filter((dynamicPath) => {
       if (isChildPropertyPath(bindingField, dynamicPath.key)) {
         const childPropertyValue = _.get(value, dynamicPath.key);
