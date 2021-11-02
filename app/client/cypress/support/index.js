@@ -51,12 +51,11 @@ before(function() {
   cy.LogOut();
   cy.SignupFromAPI(Cypress.env("TESTUSERNAME2"), Cypress.env("TESTPASSWORD2"));
   cy.LogOut();
-  initLocalstorage();
-  Cypress.Cookies.preserveOnce("SESSION");
   const username = Cypress.env("USERNAME");
   const password = Cypress.env("PASSWORD");
-  cy.visit("/users/login");
-  cy.LogintoApp(username, password);
+  initLocalstorage();
+  cy.LoginFromAPI(username, password);
+  Cypress.Cookies.preserveOnce("SESSION");
   cy.visit("/applications");
   cy.wait("@applications").should(
     "have.nested.property",
